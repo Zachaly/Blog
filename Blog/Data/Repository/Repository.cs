@@ -14,18 +14,16 @@ namespace Blog.Data.Repository
         public Repository(AppDbContext context)
             => _dbContext = context;
 
-        public async void AddPost(Post post) => _dbContext.Add(post);
+        public void AddPost(Post post) => _dbContext.Add(post);
         
         public List<Post> GetAllPosts() => _dbContext.Posts.ToList();
         
         public Post GetPost(int id) => GetAllPosts().FirstOrDefault(post => post.Id == id);
         
-
-        public async void RemovePost(int id)
+        public void RemovePost(int id)
         {
             Post post = GetPost(id);
             _dbContext.Posts.Remove(post);
-            await SaveChangesAsync();
         }
 
         public async Task<bool> SaveChangesAsync()
@@ -36,6 +34,5 @@ namespace Blog.Data.Repository
         }
 
         public void UpdatePost(Post post) => _dbContext.Posts.Update(post);
-       
     }
 }
