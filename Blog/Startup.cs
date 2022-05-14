@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Data.Repository;
+using Microsoft.AspNetCore.Identity;
 
 namespace Blog
 {
@@ -29,6 +30,17 @@ namespace Blog
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(_config["DefaultConnection"]));
             services.AddTransient<IRepository, Repository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddDefaultIdentity<IdentityUser>(options => 
+            {
+                // disabling user password requirements
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 1;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredUniqueChars = 0;
+            })
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<AppDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,12 +51,10 @@ namespace Blog
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseMvcWithDefaultRoute();
-
-            //app.Run(async context =>
-            //{
-            //    await context.Response.WriteAsync("Hello world");
-            //});
+            
         }
     }
 }
