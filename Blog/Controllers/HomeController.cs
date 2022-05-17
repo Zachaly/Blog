@@ -7,15 +7,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog.Data;
 using Blog.Data.Repository;
+using Blog.Data.FileManager;
 
 namespace Blog.Controllers
 {
     public class HomeController : Controller
     {
         private IRepository _repository;
+        private IFileManager _fileManager;
 
-        public HomeController(IRepository repo)
-            => _repository = repo;
+        public HomeController(IRepository repo, IFileManager fileManager)
+        { 
+            _repository = repo;
+            _fileManager = fileManager;
+        }
 
         public IActionResult Index() 
         {
@@ -28,37 +33,11 @@ namespace Blog.Controllers
             var post = _repository.GetPost(id);
             return View(post);
         }
-
-        [HttpGet]
-        public IActionResult Edit(int? id) 
+        [HttpGet("/Image/{image}")]
+        public IActionResult Image(string image)
         {
-            if(id == null)
-                return View(new Post());
-
-            var post = _repository.GetPost((int)id);
-            return View(post);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(Post post) 
-        { 
-            if(post.Id > 0)
-                _repository.UpdatePost(post);
-            else
-                _repository.AddPost(post);
-
-            if(await _repository.SaveChangesAsync())
-                return RedirectToAction("Index");
-
-            return View(post);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Remove(int id)
-        {
-            _repository.RemovePost(id);
-            await _repository.SaveChangesAsync();
-            return RedirectToAction("Index");
+            var mime = image.Substring(image.LastIndexOf('.') + 1);
+            return new FileStreamResult(_fileManager.ImageStream(image), $"image/{mime}");
         }
     }
 }

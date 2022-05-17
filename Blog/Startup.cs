@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blog.Data.Repository;
 using Microsoft.AspNetCore.Identity;
+using Blog.Data.FileManager;
 
 namespace Blog
 {
@@ -28,9 +29,10 @@ namespace Blog
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(_config["DefaultConnection"]));
-            services.AddTransient<IRepository, Repository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
-            services.AddDefaultIdentity<IdentityUser>(options => 
+            services.AddTransient<IRepository, Repository>();
+            services.AddTransient<IFileManager, FileManager>();
+            services.AddIdentity<IdentityUser, IdentityRole>(options => 
             {
                 // disabling user password requirements
                 options.Password.RequireNonAlphanumeric = false;
@@ -39,8 +41,12 @@ namespace Blog
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredUniqueChars = 0;
             })
-                    .AddRoles<IdentityRole>()
+                    //.AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<AppDbContext>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Authorisation/Login";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,10 +57,10 @@ namespace Blog
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMvcWithDefaultRoute();
-            
         }
     }
 }

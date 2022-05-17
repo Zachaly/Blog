@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+Blog/wwwroot/content/blog/img_17-05-2022-22-30-51.jpg
+Blog/Migrations/20220517200349_PostImage.cs
