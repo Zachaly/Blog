@@ -398,3 +398,6 @@ FodyWeavers.xsd
 *.sln.iml
 Blog/wwwroot/content/blog/img_17-05-2022-22-30-51.jpg
 Blog/Migrations/20220517200349_PostImage.cs
+
+# folder containing images added to posts
+Blog/wwwroot/content/blog/

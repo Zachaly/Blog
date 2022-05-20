@@ -3,21 +3,25 @@
 @{
 
 }
-<h2>Admin Panel</h2>
+<h2 class="title">Admin Panel</h2>
 
-<div>
-    <ul>
+<div class="main-img">
+
+</div>
+
+<div class="post-list">
+    <ul class="post-list">
         @foreach(var post in Model)
         {
             <li>
                 @post.Title
-                -
-                <a asp-controller="Panel" asp-action="Edit" asp-route-id="@post.Id">
-                    Edit
+                &nbsp; - &nbsp;
+                <a asp-controller="Panel" asp-action="Edit" asp-route-id="@post.Id" class="admin-action">
+                    Edit 
                 </a>
-                -
-                <a asp-controller="Panel" asp-action="Remove" asp-route-id="@post.Id">
-                    Remove
+                &nbsp; - &nbsp;
+                <a asp-controller="Panel" asp-action="Remove" asp-route-id="@post.Id" class="admin-action">
+                    Remove 
                 </a>
             </li>
         }
