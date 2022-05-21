@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<Post>
 
 @{
-
+    ViewBag.Title = "Home page";
+    ViewBag.Description = "Home page of Zachary's blog";
+    ViewBag.Keywords = "blog pain science poland government inflation misery computer";
 }
 <h2 class="title">Home page</h2>
 
@@ -9,7 +11,7 @@
 
 </div>
 
-<div class="post-list">
+<div class="center">
     <ul class="post-list">
         @foreach(var post in Model)
         {

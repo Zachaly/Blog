@@ -9,8 +9,13 @@
 
 </div>
 
-<div class="post-list">
+<div class="center">
+    
     <ul class="post-list">
+        <li>
+            <a asp-controller="Panel" asp-action="Edit">Create Post</a>
+        </li>
+
         @foreach(var post in Model)
         {
             <li>

@@ -17,7 +17,9 @@ namespace Blog.Data.Repository
         public void AddPost(Post post) => _dbContext.Add(post);
         
         public List<Post> GetAllPosts() => _dbContext.Posts.ToList();
-        
+        public List<Post> GetAllPosts(string category) 
+            => _dbContext.Posts.Where(post => post.Category.ToLower() == category.ToLower()).ToList();
+
         public Post GetPost(int id) => GetAllPosts().FirstOrDefault(post => post.Id == id);
         
         public void RemovePost(int id)

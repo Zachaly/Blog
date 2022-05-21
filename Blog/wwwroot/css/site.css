@@ -1,4 +1,4 @@
-﻿*{padding: 0; margin: 0; box-sizing: border-box; font-family: Arial; color: antiquewhite;}
+﻿*{padding: 0; margin: 0; box-sizing: border-box; font-family: Arial;}
 
 nav{
     background-color: #282323;
@@ -21,10 +21,12 @@ nav a {
     margin: 5px;
     border: #422f2f 3px solid;
     text-shadow: 1px 1px black;
+    color: antiquewhite;
 }
 
 nav a:hover {
     background-color: #5f4e4e;
+    color: antiquewhite;
 }
 
 .main-img{
@@ -36,11 +38,12 @@ nav a:hover {
     margin-bottom: 5px;
 }
 
-.title{
+.title {
     text-align: center;
     padding: 15px;
     font-size: 40px;
     text-shadow: 2px 2px black;
+    color: antiquewhite;
 }
 
 body{
@@ -66,11 +69,7 @@ ul.post-list li {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-div.post-list{
-    display: flex;
-    justify-content: center;
+    color: antiquewhite;
 }
 
 a.admin-action{
@@ -78,22 +77,26 @@ a.admin-action{
 }
 
 .post-body {
+    padding: 10px;
     background-color: #074557;
-    text-indent: 2em;
     font-size: 20px;
     height: 100%;
     width: 100%;
     max-width: 1000px;
     min-height: 500px;
     overflow-inline: clip;
+    color: antiquewhite;
 }
 
-p img{
+div img{
     max-width: 100%;
-    margin-top: 20px;
+    max-height: 100%;
+    margin: 20px;
 }
 
 .center{
+    max-width: 100%;
+    max-height: 100%;
     display: flex;
     justify-content: center;
 }
@@ -102,6 +105,14 @@ input{
     color: black;
 }
 
-label, input{
+label{
+    margin: 10px;
+}
+
+input {
+    margin-top: 10px;
+}
+
+label, input, #editor{
     font-size: 20px;
 }
