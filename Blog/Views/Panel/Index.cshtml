@@ -13,18 +13,18 @@
     
     <ul class="post-list">
         <li>
-            <a asp-controller="Panel" asp-action="Edit">Create Post</a>
+            <a asp-controller="Panel" asp-action="Edit" class="admin-action">Create Post</a>
         </li>
 
         @foreach(var post in Model)
         {
             <li>
                 @post.Title
-                &nbsp; - &nbsp;
+                 -&nbsp;
                 <a asp-controller="Panel" asp-action="Edit" asp-route-id="@post.Id" class="admin-action">
                     Edit 
                 </a>
-                &nbsp; - &nbsp;
+                 &nbsp;-&nbsp;
                 <a asp-controller="Panel" asp-action="Remove" asp-route-id="@post.Id" class="admin-action">
                     Remove 
                 </a>

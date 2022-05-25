@@ -71,6 +71,9 @@ ul.post-list li {
     align-items: center;
     color: antiquewhite;
 }
+ul.post-list li a:visited {
+    color: antiquewhite;
+}
 
 a.admin-action{
     color: darkred;
@@ -115,4 +118,8 @@ input {
 
 label, input, #editor{
     font-size: 20px;
+}
+
+#editor{
+    min-height: 500px;
 }

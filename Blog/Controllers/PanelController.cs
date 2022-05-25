@@ -62,7 +62,12 @@ namespace Blog.Controllers
             if (viewModel.Image == null)
                 post.Image = viewModel.CurrentImage;
             else
+            {
+                if(!string.IsNullOrEmpty(viewModel.CurrentImage))
+                    _fileManager.RemoveImage(viewModel.CurrentImage);
+
                 post.Image = await _fileManager.SaveImage(viewModel.Image);
+            }
 
             if (post.Id > 0)
                 _repository.UpdatePost(post);
@@ -78,6 +83,7 @@ namespace Blog.Controllers
         [HttpGet]
         public async Task<IActionResult> Remove(int id)
         {
+            _fileManager.RemoveImage(_repository.GetPost(id).Image);
             _repository.RemovePost(id);
             await _repository.SaveChangesAsync();
             return RedirectToAction("Index");

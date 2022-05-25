@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Blog.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Blog.Data.FileManager;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Blog
 {
@@ -29,7 +30,11 @@ namespace Blog
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(_config["DefaultConnection"]));
-            services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddMvc(option => 
+            {
+                option.EnableEndpointRouting = false;
+                option.CacheProfiles.Add("Monthly", new CacheProfile { Duration = 60 * 60 * 24 * 30 });
+            });
             services.AddTransient<IRepository, Repository>();
             services.AddTransient<IFileManager, FileManager>();
             services.AddIdentity<IdentityUser, IdentityRole>(options => 
@@ -52,10 +57,7 @@ namespace Blog
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDeveloperExceptionPage();
 
             app.UseStaticFiles();
             app.UseAuthentication();

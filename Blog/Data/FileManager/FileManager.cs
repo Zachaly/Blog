@@ -6,12 +6,18 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PhotoSauce.MagicScaler;
 
 namespace Blog.Data.FileManager
 {
     public class FileManager : IFileManager
     {
         private string _imagePath;
+        private ProcessImageSettings ImageOptions => new ProcessImageSettings
+        {
+            Width = 800,
+            ResizeMode = CropScaleMode.Crop,
+        };
 
         public FileManager(IConfiguration configuration)
             => _imagePath = configuration["Path:Images"];
@@ -19,6 +25,24 @@ namespace Blog.Data.FileManager
         public FileStream ImageStream(string image)
         {
             return new FileStream(Path.Combine(_imagePath, image), FileMode.Open, FileAccess.Read);
+        }
+
+        public bool RemoveImage(string image)
+        {
+            try
+            {
+                var file = Path.Combine(_imagePath, image);
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public async Task<string> SaveImage(IFormFile image)
@@ -36,8 +60,9 @@ namespace Blog.Data.FileManager
 
                 using (var stream = new FileStream(Path.Combine(savePath, fileName), FileMode.Create))
                 {
-                    await image.CopyToAsync(stream);
+                    MagicImageProcessor.ProcessImage(image.OpenReadStream(), stream, ImageOptions);
                 }
+
                 return fileName;
             }
             catch (Exception ex)
