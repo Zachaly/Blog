@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Blog.Data;
 using Blog.Data.Repository;
 using Blog.Data.FileManager;
+using Blog.Models.Comments;
+using Blog.ViewModels;
 
 namespace Blog.Controllers
 {
@@ -39,6 +41,42 @@ namespace Blog.Controllers
         {
             var mime = image.Substring(image.LastIndexOf('.') + 1);
             return new FileStreamResult(_fileManager.ImageStream(image), $"image/{mime}");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Comment(CommentViewModel viewModel)
+        {
+            if(!ModelState.IsValid)
+                return RedirectToAction("Post" , new { id = viewModel.PostId});
+
+            var post = _repository.GetPost(viewModel.PostId);
+
+            if(viewModel.MainCommentId == 0)
+            {
+                post.Comments = post.Comments ?? new List<MainComment>();
+
+                post.Comments.Add(new MainComment
+                {
+                    Message = viewModel.Message,
+                    Created = DateTime.Now,
+                });
+
+                _repository.UpdatePost(post);
+            }
+            else
+            {
+                var comment = new SubComment 
+                { 
+                    MainCommentId = viewModel.MainCommentId,
+                    Message = viewModel.Message,
+                    Created = DateTime.Now
+                };
+                _repository.AddSubComment(comment);
+            }
+
+            await _repository.SaveChangesAsync();
+
+            return RedirectToAction("Post", new { id = viewModel.PostId });
         }
     }
 }

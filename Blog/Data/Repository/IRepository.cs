@@ -1,4 +1,5 @@
 ﻿using Blog.Models;
+using Blog.Models.Comments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,7 @@ namespace Blog.Data.Repository
         void UpdatePost(Post post);
         void AddPost(Post post);
         Task<bool> SaveChangesAsync();
+
+        void AddSubComment(SubComment subcomment);
     }
 }

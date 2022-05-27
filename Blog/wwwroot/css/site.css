@@ -85,7 +85,6 @@ a.admin-action{
     font-size: 20px;
     height: 100%;
     width: 100%;
-    max-width: 1000px;
     min-height: 500px;
     overflow-inline: clip;
     color: antiquewhite;
@@ -98,8 +97,9 @@ div img{
 }
 
 .center{
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    min-width: 1000px;
     display: flex;
     justify-content: center;
 }
@@ -122,4 +122,40 @@ label, input, #editor{
 
 #editor{
     min-height: 500px;
+}
+
+.post-container {
+    height: 100%;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.comment-section {
+    width: 100%;
+    background-color: #0095c1;
+    padding: 5px;
+}
+
+.comment-section p, .comment-section input, .comment-section button {
+    font-size: 17px;
+}
+
+.comment-section input, .comment-section button {
+    height: 20px;
+}
+
+.comment-section .subcomment-section{
+    margin-left: 10px;
+}
+
+.comment-section h4 {
+    background-color: #0095c1;
+    max-width: 200px;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.comment{
+    margin-top: 5px;
 }
