@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Post>
+﻿@model IndexViewModel
 
 @{
     ViewBag.Title = "Home page";
@@ -13,7 +13,7 @@
 
 <div class="center">
     <ul class="post-list">
-        @foreach(var post in Model)
+        @foreach(var post in Model.Posts)
         {
             <li>
                 <a asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
@@ -22,4 +22,22 @@
             </li>
         }
     </ul>
+</div>
+
+<div class="center pages">
+    @if(Model.PageNumber > 1)
+    {
+        <a asp-action="Index" asp-controller="Home" 
+        asp-route-category="@Model.Category" 
+        asp-route-pageNumber="@(Model.PageNumber-1)">Previous Page</a>
+    }
+    <div class="current-page">
+        @Model.PageNumber
+    </div>
+    @if (Model.CanGoNextPage)
+    {
+        <a asp-action="Index" asp-controller="Home" 
+        asp-route-category="@Model.Category" 
+        asp-route-pageNumber="@(Model.PageNumber+1)">NextPage</a>
+    }
 </div>

@@ -24,10 +24,16 @@ namespace Blog.Controllers
             _fileManager = fileManager;
         }
 
-        public IActionResult Index(string category) 
+        public IActionResult Index(int pageNumber, string category) 
         {
-            var posts = string.IsNullOrEmpty(category) ? _repository.GetAllPosts() : _repository.GetAllPosts(category);
-            return View(posts);
+            if(pageNumber < 1)
+                pageNumber = 1;
+
+            //var posts = string.IsNullOrEmpty(category) ? _repository.GetPostsOnPage(pageNumber) : _repository.GetAllPosts(category);
+
+            var viewModel = _repository.GetPostsOnPage(pageNumber, category);
+
+            return View(viewModel);
         }
 
         public IActionResult Post(int id) 

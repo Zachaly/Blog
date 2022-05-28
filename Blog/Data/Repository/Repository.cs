@@ -1,5 +1,6 @@
 ﻿using Blog.Models;
 using Blog.Models.Comments;
+using Blog.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Blog.Data.Repository
     public class Repository : IRepository
     {
         private AppDbContext _dbContext;
+        private const int PageSize = 4;
 
         public Repository(AppDbContext context)
             => _dbContext = context;
@@ -32,7 +34,30 @@ namespace Blog.Data.Repository
             Include(post => post.Comments).
             ThenInclude(comment => comment.SubComments).
             FirstOrDefault(post => post.Id == id);
-        
+
+        public IndexViewModel GetPostsOnPage(int pageNumber, string category)
+        {
+            var query = _dbContext.Posts.AsQueryable();
+
+            if(!string.IsNullOrEmpty(category))
+                query = query.Where(post => post.Category.ToLower() == category.ToLower());
+
+            int pageCount = query.Count() / PageSize;
+            bool canGoNext = pageNumber <= pageCount;
+
+            query = query.
+                    Skip(PageSize * (pageNumber - 1)).
+                    Take(PageSize);
+
+            return new IndexViewModel
+            {
+                Posts = query.ToList(),
+                PageNumber = pageNumber,
+                CanGoNextPage = canGoNext,
+                Category = category
+            };
+        }
+
         public void RemovePost(int id)
         {
             Post post = GetPost(id);
